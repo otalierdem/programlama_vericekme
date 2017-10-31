@@ -1,0 +1,21 @@
+import requests
+from bs4 import BeautifulSoup
+transfermarkturl= "https://www.transfermarkt.com.tr/statistik/transfererloese"
+
+r=requests.get(transfermarkturl)
+
+soup=BeautifulSoup(r.content,"html.parser")
+
+gelen_veri = soup.find_all("table",{"class": "items"})
+
+transfertablosu= (gelen_veri[0].contents)[len(gelen_veri[0].contents)-2]
+
+transfertablosu= transfertablosu.find_all("tr")
+
+for transfer in transfertablosu:
+       transferbasligi=transfer.find_all("td",{"class":"titleColumn"})
+       transferadi=transferbasligi[0].text
+       transferadi=transferadi.replace("\n","")
+
+       print(transferadi)
+       print("************************")
